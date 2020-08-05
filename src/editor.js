@@ -258,6 +258,13 @@ function createHTML(options = {}) {
                 postAction({type: 'CONTENT_FOCUSED'});
             });
 
+            addEventListener(content, 'paste', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                content = e.clipboardData.getData('text/plain');
+                document.execCommand('insertText', false, content); // can survive through exec
+            });
+
             var message = function (event){
                 var msgData = JSON.parse(event.data), action = Actions[msgData.type];
                 if (action ){
@@ -299,4 +306,4 @@ function createHTML(options = {}) {
 }
 
 const HTML = createHTML();
-export {HTML, createHTML};
+export { HTML, createHTML };
